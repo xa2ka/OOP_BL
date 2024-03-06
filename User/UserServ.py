@@ -1,7 +1,6 @@
 class UserServ:
 
     def change_name(self,id,new_name):       
-     
        pass
 
     def change_surname():
