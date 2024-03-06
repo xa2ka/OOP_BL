@@ -2,7 +2,7 @@ class UserActivityRep:
     def __init__():
         pass
 
-    def GetUserById(self, user_id):
+    def GetUserActById(self, user_id):
         pass
     #берем юзера с бд
 
