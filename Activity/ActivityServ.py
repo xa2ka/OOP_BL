@@ -1,7 +1,18 @@
+import ActivityRep
+import Activity
+
 class ActivityServ:
     
-    def addAct():
-        pass
+    def addAct(self, activity):
+        try:
+            
+            activityRepo = ActivityRep()
+            activityRepo.WriteInDb(activity)
+            print("success")
 
-    def deleteAct():
-        pass
+        except Exception as e:
+            print(f"Произошла ошибка при добавлении активности: {e}")
+            # error
+                   
+        finally:
+            pass

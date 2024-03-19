@@ -2,12 +2,28 @@ import UserActivityRep
 
 class UserActServ:
     
-    def addUserAct(self,id,user_id,activity_id):
-       
-       UserActivityRepo=UserActivityRep()
-       
+    def addUserAct(self,UserActivity):
+      try:
+         
+         UserActivityRepo=UserActivityRep()
+         UserActivityRepo.WriteActivityInDb(UserActivity)
+         
+         print("Success")
 
+      except Exception as e:
+         print(f"Произошла ошибка: {e}")
+      
+      finally:
+         pass
 
-    def deleteUserAct():
+    def deleteUserAct(self,UserActivity):
         
-    
+      try:
+         UserActivityRepo=UserActivityRep()
+         UserActivityRepo.DelInDb(UserActivity) 
+
+      except Exception as e:
+         print(f"Произошла ошибка: {e}")
+      
+      finally:
+         pass
