@@ -6,7 +6,7 @@ class UserActivityRep:
         pass
     #берем юзера с бд
 
-    def WriteInDb(self):
+    def WriteInDb(self,UserAct):
         pass
     #запись в бд юзера
 

@@ -3,7 +3,7 @@ class ActivityRep:
     def __init__():
         pass 
     
-    def GetActivityById(self,user_id): #  BY  NAME
+    def GetActivityById(self,name): #  BY  NAME
         pass
     #берем активность с бд
 
