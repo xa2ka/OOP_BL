@@ -16,12 +16,14 @@ class UserProdServ:
             user_prod.protein = product.protein * user_prod.weight
         
             user_prod_repo.WriteInDb(user_prod)
+
             print("Success")
         except Exception as e:
             print(f"Ошибка: {e}")
         
     def deleteUserProd(self, user_prod):
          try:
+           
            user_prod_repo = UserProdRep()
            user_prod_repo.DelInDb(user_prod)
        

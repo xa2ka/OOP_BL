@@ -1,4 +1,7 @@
 class Water:
-    def __init__(self, id, user_id, ml, data):
-        self.id, self.user_id, self.ml, self.data = \
-        id, user_id, ml, data
+
+    def __init__(self, id=None, user_id=None, ml=None, data=None):
+        self.id = id
+        self.user_id = user_id
+        self.ml = ml
+        self.data = data
