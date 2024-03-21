@@ -1,6 +1,6 @@
 import UserActivityRep
-import ActivityRep
 
+from Activity.ActivityRep import ActivityRep
 class UserActServ:
     
     def addUserAct(self, user_activity):

@@ -1,8 +1,10 @@
 import sys
-sys.path.append('D:\\OOP\\Water')
-from Water import Water
-sys.path.append('D:\\OOP\\User')
-from User import User 
+sys.path.append('D:\\OOP')
+
+from Water.Water import Water
+from User.User import User
+
+
 
 
 user = User(id=1, name='John', surname='Doe', email='johndoe@example.com',
@@ -15,3 +17,6 @@ water.id=13
 
 
 print(water.id, user.id)
+
+while True:
+    pass
