@@ -7,6 +7,17 @@ class UserRep:
     def __init__(self):
         pass 
 
+
+    
+    def GetUserByEmailPassword(self, email,password):
+     
+          for user in self.users:
+              if user.email == email and user.password == password:
+                 return user
+              else:
+                 return None
+
+    
     def GetUserById(self, user_id):
       try:
           for user in self.users:
