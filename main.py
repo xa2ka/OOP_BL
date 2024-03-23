@@ -23,11 +23,12 @@ while True:
         user = User(id, name, surname, email,
            password, old_year, weight, weight_goal,
            cal_goal, gender, water_goal)
-
+        
+        
 
 
     else:
         email = input("Введите адрес электронной почты пользователя: ")
         password = input("Введите пароль пользователя: ")
-        
+
       
