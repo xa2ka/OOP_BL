@@ -1,7 +1,19 @@
-import UserRep
-import User
+from User.UserRep import UserRep
 
 class UserServ:
+
+    def add_user(self,user):
+        try:
+          
+            UserRepo = UserRep()
+            UserRepo.WriteInDb(user)
+            print("User was added!")
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
+    
+
+
+
     def change_name(self, user_id, new_name):
    
         try:
@@ -9,12 +21,11 @@ class UserServ:
             UserRepo = UserRep()
             user = UserRepo.GetUserById(user_id)
             user.name = new_name
-      
+            UserRepo.WriteInDb(user)
+
         except Exception as e:
             print(f"Произошла ошибка: {e}")
-       
-        else:
-            UserRepo.WriteInDb(user_id)
+    
 
     def change_surname(self, user_id, new_surname):
        
