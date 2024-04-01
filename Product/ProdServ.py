@@ -4,12 +4,12 @@ import Product
 
 class ProdServ:
     
-    def addProd(self, prodForWriting):
+    def AddProd(self, product):
         
         try:
         
           productRepo = ProdRep()
-          productRepo.WriteProdInDb(prodForWriting)
+          productRepo.WriteProdInDb(product)
           print("success")
         
         except Exception as e:
@@ -18,3 +18,11 @@ class ProdServ:
        
         finally:
             pass
+
+    def GetProdForCalculating(self,name):
+        try:
+            pass
+        except Exception as e:
+            pass
+        finally:
+            pass    
