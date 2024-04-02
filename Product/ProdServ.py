@@ -1,28 +1,19 @@
-import ProdRep
-import Product
+from Product.ProdRep import ProdRep
+# import Product
 
 
 class ProdServ:
-    
+    productRepo = ProdRep()
     def AddProd(self, product):
-        
         try:
-        
-          productRepo = ProdRep()
-          productRepo.WriteProdInDb(product)
-          print("success")
-        
+            self.productRepo.WriteProdInDb(product)
+            print("success")
         except Exception as e:
-            #Обработка исключения
-            print(f"Произошла ошибка:{e}")
-       
-        finally:
-            pass
+            print(f"Произошла ошибка: {e}")
 
-    def GetProdForCalculating(self,name):
+    def GetProdForCalculating(self, name):
         try:
-            pass
+            return self.productRepo.GetProdForCalculating(name)
         except Exception as e:
-            pass
-        finally:
-            pass    
+            print(f"Произошла ошибка: {e}")
+            return None

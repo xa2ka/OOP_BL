@@ -1,7 +1,10 @@
 from Product.Product import Product
+from Product.ProdRep import ProdRep
+
 
 class ProdRep:
     ProdList = []
+    ProdRepo=ProdRep()
 
     def __init__(self):
         product1 = Product(id=1, name="MEAT", cal=100, fats=5, carbs=20, protein=10)

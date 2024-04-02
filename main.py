@@ -3,39 +3,45 @@ from User.UserServ import UserServ
 from User.UserRep import UserRep
 from Product.Product import Product
 from Product.ProdRep import ProdRep
+from Product.ProdServ import ProdServ
+from UserProd.UserProdServ import UserProdServ
+from Water.WaterServ import WaterServ
+
+
+
+# import datetime
+# current_date = datetime.date.today()
+# print(current_date)
+
+
+
+user=User()
+
+ProdServo=ProdServ()
 UserServo=UserServ()
+UserProdServo=UserProdServ()
+WaterServo=WaterServ()
 
-def logIn(user):
-      email = input("Введите адрес электронной почты пользователя: ")
-      password = input("Введите пароль пользователя: ")
-      UserRepo=UserRep()
-      user = UserRepo.GetUserByEmailPassword(email,password)
-      return user
-      
 
-def SignUp(user):
-    
-        id = int(input("Введите ID пользователя: "))
-        name = input("Введите имя пользователя: ")
-        surname = input("Введите фамилию пользователя: ")
-        email = input("Введите адрес электронной почты пользователя: ")
-        password = input("Введите пароль пользователя: ")
-        old_year = int(input("Введите возраст пользователя: "))
-        weight = float(input("Введите вес пользователя: "))
-        weight_goal = float(input("Введите целевой вес пользователя: "))
-        cal_goal = int(input("Введите целевое количество калорий пользователя: "))
-        gender = input("Введите пол пользователя: ")
-        water_goal = int(input("Введите целевое количество воды пользователя: "))
+def WritingUserProd():
 
-        user = User(id, name, surname, email,
-           password, old_year, weight, weight_goal,
-           cal_goal, gender, water_goal)
-        
-        return user
-        
+    for prod in ProdRep.ProdList:
+        prod_info = vars(prod)
+        for attr, value in prod_info.items():
+            print(attr + ":", value)
+            print("------------------")
 
-ProdList=ProdRep()
-user=None 
+    NameOfProduct=("Write name of Product: ")
+            
+    for prod in UserServo.ProdRep.ProdList:
+        if NameOfProduct == prod.name:
+            product = ProdServo.GetProdForCalculating(NameOfProduct)
+            UserProdServ.addUserProd()
+            weight=input("Write weight of product in grams: ")
+            UserProd=UserProd()
+            UserProdServo.addUserProd(UserProd,product)
+
+
 
 print("HELLO!\n\
       ITS FOOD DIARY!\n\
@@ -45,15 +51,15 @@ print("HELLO!\n\
 Answer=input("Your answer: ")
 
 if Answer == "NO":
-    user=SignUp(user)
+    user=UserServ.SignUp(user)
     UserServo.add_user(user)
         
 else:
-    user=logIn(user)
+    user=UserServo.logIn(user)
     if user == None:
         answer = input("sign up?(YES/NO)")
         if answer=="YES":
-            user=SignUp(user)
+            user=UserServo.SignUp(user)
             UserServo.add_user(user)
   
 ################################################# PROGRAMM
@@ -63,10 +69,10 @@ while True:
     print("MENU:\n \
        1)Add something\n\
        2)check statistics\n\
-       4)check from date\n\
-       5)check user in db\n")
+       3)check from date\n\
+       4)check user in db\n")
   
-    ans=input("your answer: ")
+    ans=input("Your answer: ")
     
     if ans=="1":
         ans2 = input("What you would like to add?\n"
@@ -75,40 +81,44 @@ while True:
                 "3) Activity\n")
       
         if ans2=="1":
-            # ProductForUser=Product()
-            # ProductForUser.name=input("Write name of your product: ")
-            # ProductForUser.cal=float(input("Write callories of your product: "))
-            # ProductForUser.fats=float(input("Write fats of your product: "))
-            # ProductForUser.carbs=float(input("Write carbs of your product: "))
-            # ProductForUser.protein=float(input("Write protein of your product: "))   
-            # ProdList.WriteProdInDb(ProductForUser)
-         
-            ProdRep = ProdRep()
+            WritingUserProd()
 
-            # Вывод списка ProdList
-            for prod in ProdRep.ProdList:
-                prod_info = vars(prod)
-                for attr, value in prod_info.items():
-                    print(attr + ":", value)
-                print("------------------")
+        elif ans2=="2":
+            MlOfWater = input("Enter the amount of water: ")
+            #Добавить дату
+            Water=Water()
+            Water.user_id = user.id
+            Water.ml=MlOfWater()
+            WaterServo.addWater()
 
-            NameOfProduct=("Wrie name of Product: ")
-            
-            for prod in ProdRep.ProdList:
-                if NameOfProduct == prod.name:
-                    Prod = ProdRep.GetProdForCalculating(NameOfProduct)
-                    pass
-                #СПРОСИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-        elif ans2==2:
-            pass
-        elif ans2==3:
+        elif ans2=="3":
              pass
 
     
     if ans=="2":
-        pass 
+
+        Date=input("Enter date for statistic")
+       
+
+        WatLst=WaterServ.GetwaterByDate(Date)
+        WaterSum=0
+        for wat in WatLst:
+            WaterSum+=wat.ml
+        print(f"The amount of water: {WaterSum}")    
+
+
+        UserProdLst=UserProdServ.GetUserProdByDate(Date)
+        ProtSum=0
+        FatSum=0
+        CarbsSum=0
+        for UserProd in UserProdLst:
+            ProtSum+=UserProd.protein
+            FatSum+=UserProd.fats
+            CarbsSum+=UserProd.carbs
+        print(f"The amount of protein: {ProtSum}\n"
+            f"The amount of fats: {FatSum}\n"
+            f"The amount of carbs: {CarbsSum}\n")  
+
 
     if ans=="3":
         pass 
@@ -117,5 +127,16 @@ while True:
         pass
 
     if ans=="5":
-        print(logIn(user))              
+        print(UserServo.logIn(user))             
+
+
+        
+            # ProductForUser=Product()
+            # ProductForUser.name=input("Write name of your product: ")
+            # ProductForUser.cal=float(input("Write callories of your product: "))
+            # ProductForUser.fats=float(input("Write fats of your product: "))
+            # ProductForUser.carbs=float(input("Write carbs of your product: "))
+            # ProductForUser.protein=float(input("Write protein of your product: "))   
+            # ProdList.WriteProdInDb(ProductForUser)
+            # Вывод списка ProdList         
         

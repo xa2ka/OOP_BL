@@ -1,14 +1,14 @@
 class UserProdRep:
-    def __init__():
+    UserProdList = []
+
+    def __init__(self):
         pass
 
-    def GetUserActById(self, userProd):
-        pass
-    #берем юзера с бд
 
-    def WriteInDb(self,UserProd):
-        pass
-    #запись в бд юзера
+    def WriteInDb(self, UserProd):
+        self.UserProdList.append(UserProd)
 
-    def DelInDb(self,userProd): # BY NAME
-       pass
+    # def DelInDb(self, userProd):  # BY NAME
+    #     for prod in self.UserProdList:
+    #         if prod.name == userProd.name:
+    #             self.UserProdList.remove(prod)

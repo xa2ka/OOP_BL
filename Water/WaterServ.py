@@ -1,17 +1,21 @@
-import Water
-import WaterRep
+from Water.WaterRep import WaterRep
+
 
 class WaterServ:
-    
-    def addWater(self,water):
+    WaterRepo = WaterRep()    
+    def addWater(self, water):
         try:
-          
-          WaterRepo=WaterRep()
-          WaterRepo.WriteInDb(water)
-          print("success")
+            self.WaterRepo.WriteWaterInDb(water)
+            print("success")
         except Exception as e:
-          print(f"Ошибка: {e}")
-
+            print(f"Ошибка: {e}")
         finally:
-          pass
-
+            pass
+          
+    def GetwaterByDate(self,user_id,date):
+        try:
+            water_list = self.WaterRepo.GetWaterByUserData(user_id, date)
+            return water_list
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return []

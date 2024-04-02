@@ -6,8 +6,6 @@ class UserRep:
     
     def __init__(self):
         pass 
-
-
     
     def GetUserByEmailPassword(self, email,password):
      
@@ -25,22 +23,21 @@ class UserRep:
                  return user
       except Exception as e:
         print(f"ОШИБКА: {e}")
-
       return None
-       #( Получить пользователя из базы данных по идентификатору user_id)
-       #( и вернуть объект пользователя)
 
     def WriteInDb(self, user):
-        
-        try:
-        
-           user.id = len(self.users)+1
-           self.users.append(user)
-       
-        except Exception as e:
-           print(f"ОШИБКА: {e}")
-    
-       # Записать данные пользователя с идентификатором user_id в базу данных
+      try:
+          for i, existing_user in enumerate(self.users):
+              if existing_user.id == user.id:
+                  self.users[i] = user
+                  print("User data was updated!")
+                  return
+          # Если пользователь с заданным идентификатором не найден, добавляем его в список
+          user.id = len(self.users) + 1
+          self.users.append(user)
+          print("User was added!")
+      except Exception as e:
+          print(f"Ошибка: {e}")
 
     def DelUserInDb(self, user_id):
       try:
@@ -51,8 +48,3 @@ class UserRep:
       except Exception as e:
         print(f"Ошибка: {e}")
         # Удалить пользователя из базы данных по идентификатору user_id
-
-    def UpdateInDb(self,user_id):
-       for user in self.users:
-           if user.id== user_id:
-               pass
