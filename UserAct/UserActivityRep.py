@@ -1,14 +1,25 @@
+from UserAct.UserAct import UserAct
+
+
 class UserActivityRep:
-    def __init__():
+    UserActList = []
+
+    def __init__(self):
         pass
 
-    def GetUserActById(self, user_id):
-        pass
-    #берем юзера с бд
 
-    def WriteInDb(self,UserAct):
-        pass
-    #запись в бд юзера
+    def GetUserActByDate(self, user_id, date):
+        matching_user_acts = []
+        for user_act in self.UserActList:
+            if user_act.user_id == user_id and user_act.date == date:
+                matching_user_acts.append(user_act)
+        return matching_user_acts
 
-    def DelInDb(self,user_id): # BY NAME
-       pass
+    def WriteInDb(self, user_act):
+        self.UserActList.append(user_act)
+        print("User activity written to database")
+
+    # def DelInDb(self, user_id):
+    #     # Удаляем записи из UserActList по user_id
+    #     self.UserActList = [user_act for user_act in self.UserActList if user_act.user_id != user_id]
+    #     print("User activity deleted from database")

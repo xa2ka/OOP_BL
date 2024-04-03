@@ -1,17 +1,17 @@
 from User.User import User
 from User.UserServ import UserServ
-from User.UserRep import UserRep
-from Product.Product import Product
+# from User.UserRep import UserRep
+# from Product.Product import Product
 from Product.ProdRep import ProdRep
 from Product.ProdServ import ProdServ
 from UserProd.UserProdServ import UserProdServ
+from UserAct.UserAct import UserAct
 from Water.WaterServ import WaterServ
+from Activity.ActivityServ import ActivityServ
+from UserAct.UserActServ import UserActServ
 
-
-
-# import datetime
-# current_date = datetime.date.today()
-# print(current_date)
+import datetime
+current_date = datetime.date.today()
 
 
 
@@ -21,6 +21,8 @@ ProdServo=ProdServ()
 UserServo=UserServ()
 UserProdServo=UserProdServ()
 WaterServo=WaterServ()
+ActivityServo=ActivityServ()
+UserActServo=UserActServ()
 
 
 def WritingUserProd():
@@ -33,7 +35,7 @@ def WritingUserProd():
 
     NameOfProduct=("Write name of Product: ")
             
-    for prod in UserServo.ProdRep.ProdList:
+    for prod in ProdRep.ProdList:
         if NameOfProduct == prod.name:
             product = ProdServo.GetProdForCalculating(NameOfProduct)
             UserProdServ.addUserProd()
@@ -41,6 +43,18 @@ def WritingUserProd():
             UserProd=UserProd()
             UserProdServo.addUserProd(UserProd,product)
 
+
+
+def AddWaterForUser():
+            MlOfWater = input("Enter the amount of water: ")
+            #Добавить дату
+            Water=Water()
+            Water.user_id = user.id
+            Water.ml=MlOfWater()
+            WaterServo.addWater()
+
+
+################################################# PROGRAMM
 
 
 print("HELLO!\n\
@@ -51,26 +65,23 @@ print("HELLO!\n\
 Answer=input("Your answer: ")
 
 if Answer == "NO":
-    user=UserServ.SignUp(user)
+    user=UserServo.SignUp()
     UserServo.add_user(user)
         
 else:
-    user=UserServo.logIn(user)
+    user=UserServo.logIn()
     if user == None:
         answer = input("sign up?(YES/NO)")
         if answer=="YES":
-            user=UserServo.SignUp(user)
+            user=UserServo.SignUp()
             UserServo.add_user(user)
   
-################################################# PROGRAMM
-
 while True:
 
     print("MENU:\n \
        1)Add something\n\
        2)check statistics\n\
-       3)check from date\n\
-       4)check user in db\n")
+       5)check user in db\n")
   
     ans=input("Your answer: ")
     
@@ -84,28 +95,23 @@ while True:
             WritingUserProd()
 
         elif ans2=="2":
-            MlOfWater = input("Enter the amount of water: ")
-            #Добавить дату
-            Water=Water()
-            Water.user_id = user.id
-            Water.ml=MlOfWater()
-            WaterServo.addWater()
+            AddWaterForUser()
 
         elif ans2=="3":
-             pass
+            ActivityServo.GetAllActivities()
+            name_act = input("Enter name of activity: ")
+            activity = ActivityServ.GetActByName(name_act)
+            time_min = int(input("Enter time of your activity: "))
+            UserActo = UserAct(name_act, user.id,current_date,0,time_min)
+            UserActServo.addUserAct(UserActo)
 
-    
     if ans=="2":
-
         Date=input("Enter date for statistic")
-       
-
         WatLst=WaterServ.GetwaterByDate(Date)
         WaterSum=0
         for wat in WatLst:
             WaterSum+=wat.ml
         print(f"The amount of water: {WaterSum}")    
-
 
         UserProdLst=UserProdServ.GetUserProdByDate(Date)
         ProtSum=0
@@ -119,6 +125,8 @@ while True:
             f"The amount of fats: {FatSum}\n"
             f"The amount of carbs: {CarbsSum}\n")  
 
+        print(f"Callories in activity: {UserActServo.GetUserActByDate(user.id,current_date)}")
+
 
     if ans=="3":
         pass 
@@ -127,7 +135,7 @@ while True:
         pass
 
     if ans=="5":
-        print(UserServo.logIn(user))             
+        print(UserServo.logIn())             
 
 
         

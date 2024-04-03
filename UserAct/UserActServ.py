@@ -1,32 +1,38 @@
-import UserActivityRep
+from UserAct.UserActivityRep import UserActivityRep
+from UserAct.UserActivityRep import UserActivityRep
 
-from Activity.ActivityRep import ActivityRep
+
 class UserActServ:
+
+    user_activity_repo = UserActivityRep()
     
-    def addUserAct(self, user_activity):
+    def GetCalActiv(self,user_id,date):
+        sumCal=0
+        for user_act in self.user_activity_repo.UserActList:
+            if user_act.user_id == user_id and user_act.date == date:
+                sumCal+=user_act.cal
+        return sumCal
+        
+    def addUserAct(self,activity, user_activity):
         try:
-            activity_repo = ActivityRep()
-            activity = activity_repo.GetActivityById(user_activity.activity_id)
-
             user_activity.cal = activity.cal * user_activity.number_min
-
-            user_activity_repo = UserActivityRep()
-
-            user_activity_repo.WriteInDb(user_activity)
-
+            self.user_activity_repo.WriteInDb(user_activity)
             print("Success")
-
         except Exception as e:
             print(f"Произошла ошибка: {e}")
-      
-   
-    def deleteUserAct(self, user_activity):
+
+    def GetUserActByDate(self,user_id,date):
         try:
-            user_activity_repo = UserActivityRep()
-            user_activity_repo.DelInDb(user_activity) 
-
+           
+           self.user_activity_repo.GetUserActByDate(user_id, date)
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
-        finally:
-          pass
+            print(f"Произошла ошибка: {e}")          
+   
+    # def deleteUserAct(self, user_activity):
+    #     try:     
+    #         self.user_activity_repo.DelInDb(user_activity) 
+    #     except Exception as e:
+    #         print(f"Произошла ошибка: {e}")
+    #     finally:
+    #       pass
 

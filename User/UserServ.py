@@ -6,7 +6,7 @@ class UserServ:
 
     UserRepo=UserRep()
     
-    def logIn(self,user):
+    def logIn(self):
         try:
             email = input("Введите адрес электронной почты пользователя: ")
             password = input("Введите пароль пользователя: ")
@@ -17,7 +17,7 @@ class UserServ:
             return None
       
 
-    def SignUp(self,user):
+    def SignUp(self):
         try:
             id = int(input("Введите ID пользователя: "))
             name = input("Введите имя пользователя: ")

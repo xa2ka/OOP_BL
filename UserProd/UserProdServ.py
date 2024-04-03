@@ -1,5 +1,5 @@
-from UserProd import UserProdRep
-from Product import ProdRep
+from UserProd.UserProdRep import UserProdRep
+from Product.ProdRep import ProdRep
 
 
 class UserProdServ:
