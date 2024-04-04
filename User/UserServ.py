@@ -36,6 +36,7 @@ class UserServ:
             cal_goal, gender, water_goal)
             
             self.add_user(user)
+            return user
         
         except Exception as e:
             print(f"Ошибка: {e}")

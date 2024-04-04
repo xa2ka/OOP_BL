@@ -9,6 +9,8 @@ from UserAct.UserAct import UserAct
 from Water.WaterServ import WaterServ
 from Activity.ActivityServ import ActivityServ
 from UserAct.UserActServ import UserActServ
+from UserProd.UserProd import UserProd
+from Water.Water import Water
 
 import datetime
 current_date = datetime.date.today()
@@ -33,25 +35,29 @@ def WritingUserProd():
             print(attr + ":", value)
             print("------------------")
 
-    NameOfProduct=("Write name of Product: ")
+    NameOfProduct=input("Write name of Product: ")
             
     for prod in ProdRep.ProdList:
         if NameOfProduct == prod.name:
             product = ProdServo.GetProdForCalculating(NameOfProduct)
-            UserProdServ.addUserProd()
-            weight=input("Write weight of product in grams: ")
-            UserProd=UserProd()
-            UserProdServo.addUserProd(UserProd,product)
+        
+    weight = int(input("Write weight of product in grams: "))
+    UserProdo=UserProd()
+    UserProdo.weight=weight
+    UserProdo.date=0
+    UserProdo.user_id=user.id
+    UserProdServo.addUserProd(UserProdo,product)
+    
 
 
 
 def AddWaterForUser():
             MlOfWater = input("Enter the amount of water: ")
             #Добавить дату
-            Water=Water()
-            Water.user_id = user.id
-            Water.ml=MlOfWater()
-            WaterServo.addWater()
+            Watero=Water()
+            Watero.user_id = user.id
+            Watero.ml=MlOfWater
+            WaterServo.addWater(Watero)
 
 
 ################################################# PROGRAMM
@@ -82,6 +88,7 @@ while True:
        1)Add something\n\
        2)check statistics\n\
        5)check user in db\n")
+       
   
     ans=input("Your answer: ")
     
@@ -100,33 +107,65 @@ while True:
         elif ans2=="3":
             ActivityServo.GetAllActivities()
             name_act = input("Enter name of activity: ")
-            activity = ActivityServ.GetActByName(name_act)
+            activity = ActivityServo.GetActByName(name_act)
             time_min = int(input("Enter time of your activity: "))
-            UserActo = UserAct(name_act, user.id,current_date,0,time_min)
-            UserActServo.addUserAct(UserActo)
+            UserActServo.addUserAct(activity, user.id,time_min)
+
+            for item in UserActServo.user_activity_repo.UserActList:
+                print("Name:", item.name)
+                print("User ID:", item.user_id)
+                print("Calories:", item.cal)
+                print("Number of Minutes:", item.number_min)
+                print("Date:", item.date)
+                print()  # Пустая строка для разделения вывода каждого элемента
+
+# class UserAct:
+#     def __init__(self, name="", user_id=0, data=0, cal=0, number_min=0):
+#         self.name, self.user_id, self.activity_id, self.cal, self.number_min, self.data = \
+#         name, user_id, cal, number_min, data
+
 
     if ans=="2":
-        Date=input("Enter date for statistic")
-        WatLst=WaterServ.GetwaterByDate(Date)
-        WaterSum=0
-        for wat in WatLst:
-            WaterSum+=wat.ml
-        print(f"The amount of water: {WaterSum}")    
+        Date=int(input("Enter date for statistic: "))
+        
+        try: 
+            WatLst=WaterServo.GetwaterByDate(user.id,Date)
+            WaterSum=0
+            for wat in WatLst:
+                WaterSum+=wat.ml
+            print(f"The amount of water: {WaterSum}")    
+        except Exception as e:
+            print(f"Ошибка: {e}")    
 
-        UserProdLst=UserProdServ.GetUserProdByDate(Date)
-        ProtSum=0
-        FatSum=0
-        CarbsSum=0
-        for UserProd in UserProdLst:
-            ProtSum+=UserProd.protein
-            FatSum+=UserProd.fats
-            CarbsSum+=UserProd.carbs
-        print(f"The amount of protein: {ProtSum}\n"
-            f"The amount of fats: {FatSum}\n"
-            f"The amount of carbs: {CarbsSum}\n")  
+        try:
+            UserProdLst = UserProdServo.GetUserProdByDate(user.id,Date)
+            ProtSum=0
+            FatSum=0
+            CarbsSum=0
+            CalSum=0
 
-        print(f"Callories in activity: {UserActServo.GetUserActByDate(user.id,current_date)}")
+            for UserProd_ in UserProdLst:    
+                ProtSum+=UserProd_.protein
+                FatSum+=UserProd_.fats
+                CarbsSum+=UserProd_.carbs
+                CalSum+=UserProd_.cal
+            print(f"The amount of protein: {ProtSum}\n"
+                f"The amount of fats: {FatSum}\n"
+                f"The amount of fats: {CalSum}\n"
+                f"The amount of carbs: {CarbsSum}\n")  
+            
+        except Exception as e:
+            print(f"Ошибка: {e}") 
+        
+        try:
+            UserActList=UserActServo.GetUserActByDate(user.id,Date)
+            CalOfUsersActs=0
+            for user_act in UserActList:
+                CalOfUsersActs+=user_act.cal
 
+            print(f"Callories in activity: {CalOfUsersActs}")
+        except Exception as e:
+            print(f"Ошибка: {e}")
 
     if ans=="3":
         pass 
@@ -136,15 +175,18 @@ while True:
 
     if ans=="5":
         print(UserServo.logIn())             
-
-
-        
-            # ProductForUser=Product()
-            # ProductForUser.name=input("Write name of your product: ")
-            # ProductForUser.cal=float(input("Write callories of your product: "))
-            # ProductForUser.fats=float(input("Write fats of your product: "))
-            # ProductForUser.carbs=float(input("Write carbs of your product: "))
-            # ProductForUser.protein=float(input("Write protein of your product: "))   
-            # ProdList.WriteProdInDb(ProductForUser)
-            # Вывод списка ProdList         
-        
+   
+    # if ans == "6":
+    #     date = int(input("Write date: "))
+    #     lst = UserProdServo.GetUserProdByDate(user.id, date)
+    #     print("---------------RESULT-----------------")
+    #     for item in lst:
+    #         print("User ID:", item.user_id)
+    #         print("Name:", item.name)
+    #         print("Calories:", item.cal)
+    #         print("Protein:", item.protein)
+    #         print("Carbs:", item.carbs)
+    #         print("Fats:", item.fats)
+    #         print("Date:", item.date)
+    #         print("Weight:", item.weight)
+    #         print()  # Пустая строка для разделения вывода каждого элемента

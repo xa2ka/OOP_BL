@@ -3,6 +3,7 @@ from Water.WaterRep import WaterRep
 
 class WaterServ:
     WaterRepo = WaterRep()    
+
     def addWater(self, water):
         try:
             self.WaterRepo.WriteWaterInDb(water)

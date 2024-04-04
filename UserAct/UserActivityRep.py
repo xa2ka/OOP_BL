@@ -1,4 +1,3 @@
-from UserAct.UserAct import UserAct
 
 
 class UserActivityRep:
@@ -10,12 +9,16 @@ class UserActivityRep:
 
     def GetUserActByDate(self, user_id, date):
         matching_user_acts = []
+        
         for user_act in self.UserActList:
+            
+            print(user_act.user_id,user_id,user_act.date,date)
+
             if user_act.user_id == user_id and user_act.date == date:
                 matching_user_acts.append(user_act)
         return matching_user_acts
 
-    def WriteInDb(self, user_act):
+    def WriteInDb(self, user_act,):
         self.UserActList.append(user_act)
         print("User activity written to database")
 

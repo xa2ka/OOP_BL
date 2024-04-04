@@ -4,6 +4,7 @@ from Product.ProdRep import ProdRep
 
 class ProdServ:
     productRepo = ProdRep()
+    
     def AddProd(self, product):
         try:
             self.productRepo.WriteProdInDb(product)
