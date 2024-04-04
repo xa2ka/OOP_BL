@@ -8,7 +8,7 @@ class UserProdRep:
     def WriteInDb(self, UserProd):
         self.UserProdList.append(UserProd)
 
-    # def DelInDb(self, userProd):  # BY NAME
-    #     for prod in self.UserProdList:
-    #         if prod.name == userProd.name:
-    #             self.UserProdList.remove(prod)
+    def DelInDb(self, userProd):  
+        for prod in self.UserProdList:
+            if prod.name == userProd.name:
+                self.UserProdList.remove(prod)

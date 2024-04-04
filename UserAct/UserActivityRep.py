@@ -12,8 +12,6 @@ class UserActivityRep:
         
         for user_act in self.UserActList:
             
-            print(user_act.user_id,user_id,user_act.date,date)
-
             if user_act.user_id == user_id and user_act.date == date:
                 matching_user_acts.append(user_act)
         return matching_user_acts
