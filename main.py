@@ -1,9 +1,10 @@
+import datetime
+
 from User.User import User
 from User.UserServ import UserServ
 from Product.ProdRep import ProdRep
 from Product.ProdServ import ProdServ
 from UserProd.UserProdServ import UserProdServ
-# from UserAct.UserAct import UserAct
 from Water.WaterServ import WaterServ
 from Activity.ActivityServ import ActivityServ
 from UserAct.UserActServ import UserActServ
@@ -16,11 +17,6 @@ from Reminders.RemindersServ import RemindersServ
 
 import datetime
 current_date = datetime.date.today()
-
-# date_str = input("Введите дату в формате ГГГГ-ММ-ДД: ")
-# year, month, day = map(int, date_str.split('-'))
-# date = datetime.date(year, month, day)
-# print("Введенная дата:", date)
 
 user=User()
 
@@ -60,9 +56,18 @@ def case_1():
             print("Number of Minutes:", item.number_min)
             print("Date:", item.date)
             print()  # Пустая строка для разделения вывода каждого элемента
-
+    else:
+        print("Invalid choice")
+        return
+    
 def case_2():
-        Date = int(input("Enter date for checking Product List: "))
+        try:
+            date_str = input("Enter date for checking Product List(DD.MM.YYYY): ")
+            Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+        except Exception as e:
+            print(f"Invalid input: {e}")
+
+        # Date = int(input("Enter date for checking Product List: "))
         UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date)
 
         print("User Product List:\n--------------------------")
@@ -83,7 +88,9 @@ def case_2():
 
 
 def case_3():
-    Date = int(input("Enter date for statistics: "))
+    date_str = input("Enter date for statistics (DD.MM.YYYY): ")
+    Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+
     print("----------------STATISTICS--------------\n\n\n")
     print("----------------WATER----------------\n")
     try: 
@@ -151,7 +158,12 @@ def case_3():
 
 
 def case_4():
-        date = int(input("Enter date for checking Product List/Activities: "))
+        try:
+            date_str = input("Enter the date when the product was eaten (DD.MM.YYYY): ")
+            date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+        except Exception as e:
+            print(f"Error: {e}")
+
         UserProdLst = UserProdServo.GetUserProdByDate(user.id, date)
 
         print("User Product List:\n--------------------------")
@@ -180,7 +192,11 @@ def case_5():
 
 def case_6():
     name=input("Enter name of your reminder: ")
-    on_off=int(input("Enter 1 if reminder is ON and 0 if is OFF: "))
+    try:
+        on_off=int(input("Enter 1 if reminder is ON and 0 if is OFF: "))
+    except Exception as e:
+        print(f"Error: {e}")
+    
     time=input("Enter time of your reminder: ")
     remind=Reminder()
     remind.user_id=user.id
@@ -220,7 +236,7 @@ def WritingUserProd():
         prod_info = vars(prod)
         for attr, value in prod_info.items():
             print(attr + ":", value)
-            print("------------------")
+        print("------------------")    
 
     NameOfProduct=input("Write name of Product: ")
             
@@ -238,7 +254,11 @@ def WritingUserProd():
     UserProdo.weight=weight
     UserProdo.date=0
     UserProdo.user_id=user.id
-    UserProdo.date=int(input("Enter the date when the product was eaten: "))
+
+    date_str = input("Enter the date when the product was eaten (DD.MM.YYYY): ")
+    date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+    UserProdo.date = date
+
     UserProdServo.addUserProd(UserProdo,product)
     
 
@@ -255,7 +275,11 @@ def AddWaterForUser():
             Watero=Water()
             Watero.user_id = user.id
             Watero.ml=MlOfWater
-            Watero.date=int(input("Write date when water was drunk: "))
+
+            date_str = input("Write date when water was drunk (DD.MM.YYYY): ")
+            date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+            Watero.date = date
+
             WaterServo.addWater(Watero)
 
 def initialize():
@@ -280,6 +304,7 @@ def initialize():
                 UserServo.add_user(user)
     
     return user
+
 ################################################# PROGRAMM
 
 user=initialize()
