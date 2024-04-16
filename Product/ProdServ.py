@@ -18,3 +18,9 @@ class ProdServ:
         except Exception as e:
             print(f"Произошла ошибка: {e}")
             return None
+    def GetAllProducts(self):
+        try:
+            return self.productRepo.GetAllProducts()
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
+            return None

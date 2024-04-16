@@ -8,8 +8,10 @@ class UserProdServ:
 
     def addUserProd(self, user_prod, product):
         try:
-            # print(self.user_prod_repo.UserProdList)
-
+            print(f"{user_prod.name}, {user_prod.cal}, {user_prod.carbs},{user_prod.protein}")
+            print()
+            print(f"{product.name}, {product.cal}, {product.carbs},{product.protein}")
+            
             user_prod.name = product.name
             user_prod.cal = product.cal * user_prod.weight
             user_prod.carbs = product.carbs * user_prod.weight
@@ -31,7 +33,7 @@ class UserProdServ:
 
     def GetUserProdByDate(self,user_id, date):
             user_prods = []
-            for user_prod in self.user_prod_repo.UserProdList:
-                if user_prod.date == date and user_id==user_prod.user_id:
+            for user_prod in self.user_prod_repo.load_user_product_data_from_file():
+                if user_prod.date == date and user_id == user_prod.user_id:
                     user_prods.append(user_prod)
             return user_prods

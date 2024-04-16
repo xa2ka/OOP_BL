@@ -5,7 +5,8 @@ class ActivityServ:
     activityRepo = ActivityRep()
 
     def GetAllActivities(self):
-        activities = self.activityRepo.ActList
+
+        activities = self.activityRepo.GetAllActivities()
         if not activities:
             print("No activities found.")
         else:
@@ -14,7 +15,7 @@ class ActivityServ:
                 print(f"- Name: {activity.name}")
 
     def GetActByName(self,name):
-        for activity in self.activityRepo.ActList:
+        for activity in self.activityRepo.GetAllActivities():
             if activity.name == name:
                 return activity   
         return None

@@ -1,5 +1,6 @@
 import datetime
 
+from Product.Product import Product
 from User.User import User
 from User.UserServ import UserServ
 from Product.ProdRep import ProdRep
@@ -47,19 +48,17 @@ def case_1():
         name_act = input("Enter name of activity: ")
         activity = ActivityServo.GetActByName(name_act)
         time_min = int(input("Enter time of your activity: "))
-        UserActServo.addUserAct(activity, user.id, time_min)
 
-        for item in UserActServo.user_activity_repo.UserActList:
-            print("Name:", item.name)
-            print("User ID:", item.user_id)
-            print("Calories:", item.cal)
-            print("Number of Minutes:", item.number_min)
-            print("Date:", item.date)
-            print()  # Пустая строка для разделения вывода каждого элемента
+        date_str = input("Enter date for adding your activity(DD.MM.YYYY): ")
+        Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+        
+        UserActServo.addUserAct(activity, user.id, time_min,Date)
+                
     else:
         print("Invalid choice")
         return
     
+
 def case_2():
         try:
             date_str = input("Enter date for checking Product List(DD.MM.YYYY): ")
@@ -67,7 +66,6 @@ def case_2():
         except Exception as e:
             print(f"Invalid input: {e}")
 
-        # Date = int(input("Enter date for checking Product List: "))
         UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date)
 
         print("User Product List:\n--------------------------")
@@ -88,8 +86,15 @@ def case_2():
 
 
 def case_3():
-    date_str = input("Enter date for statistics (DD.MM.YYYY): ")
-    Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+
+    while True:
+        date_str = input("Введите дату в формате дд.мм.гггг: ")
+        try:
+            Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+        except ValueError:
+            print("Некорректный формат даты. Пожалуйста, введите дату в правильном формате (дд.мм.гггг).")
+        else:
+            break
 
     print("----------------STATISTICS--------------\n\n\n")
     print("----------------WATER----------------\n")
@@ -232,18 +237,20 @@ def case_7():
 
 def WritingUserProd():
 
-    for prod in ProdRep.ProdList:
+    for prod in ProdServo.GetAllProducts():
         prod_info = vars(prod)
         for attr, value in prod_info.items():
             print(attr + ":", value)
         print("------------------")    
 
     NameOfProduct=input("Write name of Product: ")
-            
-    for prod in ProdRep.ProdList:
-        if NameOfProduct == prod.name:
-            product = ProdServo.GetProdForCalculating(NameOfProduct)
-        
+    product = Product()  
+    for prod in ProdServo.GetAllProducts():    
+      if NameOfProduct == prod.name:
+          product=prod
+          break
+      
+   
     try:
         weight = int(input("Write weight of product in grams: "))
     except Exception as e:
@@ -252,7 +259,6 @@ def WritingUserProd():
 
     UserProdo=UserProd()
     UserProdo.weight=weight
-    UserProdo.date=0
     UserProdo.user_id=user.id
 
     date_str = input("Enter the date when the product was eaten (DD.MM.YYYY): ")
@@ -284,30 +290,41 @@ def AddWaterForUser():
 
 def initialize():
     global user
-    print("HELLO!\n"
+    print("\n\n\nHELLO!\n"
           "ITS FOOD DIARY!\n"
           "If you have an account, please write: YES\n"
           "Otherwise, write: NO")
-
+    
     answer = input("Your answer: ")
+    while answer != "NO" and answer != "YES":
+        print("Incorrect input")
+        answer = input("Your answer: ")
+        
 
     if answer == "NO":
         user = UserServo.SignUp()
-        UserServo.add_user(user)
+        if user == None:
+            return
+        else:
+            UserServo.add_user(user)
 
     else:
         user = UserServo.logIn()
         if user is None:
-            answer = input("Sign up? (YES/NO)")
+            answer = input("Sign up? (YES/NO): ")
             if answer == "YES":
                 user = UserServo.SignUp()
                 UserServo.add_user(user)
+            else:
+                exit()    
     
     return user
 
 ################################################# PROGRAMM
 
 user=initialize()
+if user==None:
+    user=initialize()
 
 while True:
 

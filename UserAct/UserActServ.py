@@ -3,9 +3,9 @@ from UserAct.UserAct import UserAct
 
 
 class UserActServ:
+    def __init__(self):
+        self.user_activity_repo = UserActivityRep()
 
-    user_activity_repo = UserActivityRep()
-    
     def GetCalActiv(self,user_id,date):
         sumCal=0
         for user_act in self.user_activity_repo.UserActList:
@@ -15,17 +15,16 @@ class UserActServ:
                   
                     # UserActServo.addUserAct(activity, user.id,time_min)
 
-    def addUserAct(self,activity,user_id,time_min):
+    def addUserAct(self,activity,user_id,time_min,date):
         # try:
-            UserActo=UserAct()
-            UserActo.name = activity.name
-            UserActo.user_id=user_id
-            UserActo.number_min=time_min
-
-            UserActo.cal=activity.cal * time_min
-
-            self.user_activity_repo.WriteInDb(UserActo)
-            print("Success")
+           user_activity=UserAct()
+           user_activity.name = activity.name
+           user_activity.user_id=user_id
+           user_activity.number_min=time_min
+           user_activity.cal=activity.cal * time_min
+           user_activity.date=date
+           self.user_activity_repo.WriteInDb(user_activity)
+           print("Success")
         # except Exception as e:
         #     print(f"Произошла ошибка: {e}")
 

@@ -2,7 +2,8 @@ from Water.WaterRep import WaterRep
 
 
 class WaterServ:
-    WaterRepo = WaterRep()    
+    def __init__(self): 
+        self.WaterRepo = WaterRep()    
 
     def addWater(self, water):
         try:
