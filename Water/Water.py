@@ -21,3 +21,4 @@ class Water:
             ml=data.get("ml", 0),
             date=datetime.datetime.fromisoformat(data.get("date"))
         )
+    

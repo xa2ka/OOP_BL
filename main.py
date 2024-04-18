@@ -235,7 +235,7 @@ def case_7():
         print("Invalid choice")
         return
 
-def WritingUserProd():
+def WritingUserProd():  
 
     for prod in ProdServo.GetAllProducts():
         prod_info = vars(prod)
