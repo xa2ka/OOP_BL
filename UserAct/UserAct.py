@@ -8,7 +8,7 @@ class UserAct:
         self.cal = cal
         self.number_min = number_min
         self.date = date if date is not None else datetime.date.today()
-
+ 
     def to_dict(self):
         return {
             "name": self.name,
@@ -27,3 +27,4 @@ class UserAct:
             number_min=data.get("number_min", 0),
             date=datetime.datetime.fromisoformat(data.get("date"))
         )
+    

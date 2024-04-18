@@ -8,10 +8,7 @@ class UserProdServ:
 
     def addUserProd(self, user_prod, product):
         try:
-            print(f"{user_prod.name}, {user_prod.cal}, {user_prod.carbs},{user_prod.protein}")
-            print()
-            print(f"{product.name}, {product.cal}, {product.carbs},{product.protein}")
-            
+
             user_prod.name = product.name
             user_prod.cal = product.cal * user_prod.weight
             user_prod.carbs = product.carbs * user_prod.weight

@@ -1,1 +1,1 @@
-[{"user_id": 1, "name": "", "cal": 0, "protein": 0, "carbs": 0, "fats": 0, "date": "1313-11-13", "weight": 40}]
+[{"user_id": 1, "name": "MILK", "cal": 10500, "protein": 1050, "carbs": 1750, "fats": 560, "date": "1111-11-11", "weight": 70}, {"user_id": 1, "name": "ALMONDS", "cal": 3200, "protein": 120, "carbs": 120, "fats": 280, "date": "1111-11-11", "weight": 20}, {"user_id": 1, "name": "ALMONDS", "cal": 32000, "protein": 1200, "carbs": 1200, "fats": 2800, "date": "1111-11-11", "weight": 200}]

@@ -190,10 +190,28 @@ def case_4():
             print("Activity calories: ",user_act.cal)
             print("Activity time in min: ",user_act.number_min)
 
-
 def case_5():
-    print(UserServo.logIn()) 
+    # print(UserServo.logIn()) 
+    print("What do you want to change?\n\
+          1) Your weight\n\
+          2) Your weight goal\n\
+          3) Your calories goal\n\
+          4) Your water goal\n")
+    
+    ans = int(input("Write your answer: "))
 
+    if ans == 1:
+        ans_ = float(input("Write your new weight: "))
+        UserServo.change_user_data(user.id, "weight", ans_)
+    elif ans == 2:
+        ans_ = float(input("Write your new weight goal: "))
+        UserServo.change_user_data(user.id, "weight_goal", ans_)
+    elif ans == 3:
+        ans_ = int(input("Write your new calories goal: "))
+        UserServo.change_user_data(user.id, "cal_goal", ans_)
+    elif ans == 4:
+        ans_ = int(input("Write your new water goal: "))
+        UserServo.change_user_data(user.id, "water_goal", ans_)
 
 def case_6():
     name=input("Enter name of your reminder: ")
@@ -333,7 +351,7 @@ while True:
             2)Delete Product in List by date\n\
             3)Check statistics\n\
             4)View ProductList\Activities by date\n\
-            5)Check user in db\n\
+            5)Profile\n\
             6)Add Reminders\n\
             7)Log out\n")
         

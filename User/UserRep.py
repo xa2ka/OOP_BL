@@ -67,3 +67,14 @@ class UserRep:
             print(f"Пользователь с ID {user_id} не найден")
         except Exception as e:
             print(f"Ошибка: {e}")
+
+    def UpdateUserInDb(self,user):
+        try:
+            for user_ in self.users:
+                if user_.id == user.id:
+                    user_=user
+                    print("User was update")
+                    self.save_users_to_file()   
+                    return     
+        except Exception as e:
+            print(f"Возникла ошибка: {e}")
