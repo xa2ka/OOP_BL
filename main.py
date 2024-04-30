@@ -1,7 +1,18 @@
 import datetime
 
-from Product.Product import Product
-from User.User import User
+# from Product.Product import Product
+# from User.User import User
+# from Water.Water import Water
+# from Reminders.Reminders import Reminder
+# from UserProd.UserProd import UserProd
+
+
+
+from EntitiesForOOP.Product import Product
+from EntitiesForOOP.User import User
+from EntitiesForOOP.Water import Water
+from EntitiesForOOP.Reminders import Reminder
+
 from User.UserServ import UserServ
 from Product.ProdRep import ProdRep
 from Product.ProdServ import ProdServ
@@ -9,9 +20,6 @@ from UserProd.UserProdServ import UserProdServ
 from Water.WaterServ import WaterServ
 from Activity.ActivityServ import ActivityServ
 from UserAct.UserActServ import UserActServ
-from UserProd.UserProd import UserProd
-from Water.Water import Water
-from Reminders.Reminders import Reminder
 from Reminders.RemindersServ import RemindersServ
 
 

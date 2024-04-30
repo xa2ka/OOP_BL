@@ -1,5 +1,6 @@
 from User.UserRep import UserRep
-from User.User import User
+# from User.User import User
+from EntitiesForOOP.User import User
 
 
 class UserServ:

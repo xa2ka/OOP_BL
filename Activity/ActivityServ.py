@@ -1,5 +1,8 @@
 from Activity.ActivityRep import ActivityRep
-from Activity.Activity import Activity
+# from Activity.Activity import Activity
+from EntitiesForOOP import Activity
+
+
 
 class ActivityServ:
     activityRepo = ActivityRep()

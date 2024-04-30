@@ -1,4 +1,5 @@
-from UserProd.UserProd import UserProd
+# from UserProd.UserProd import UserProd
+from EntitiesForOOP.UserProd import UserProd
 import json
 
 class UserProdRep:

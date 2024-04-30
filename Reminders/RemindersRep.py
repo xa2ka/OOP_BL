@@ -1,4 +1,5 @@
-from Reminders.Reminders import Reminder
+# from Reminders.Reminders import Reminder
+from EntitiesForOOP.Reminders import Reminder
 import json
 
 class RemindersRep:

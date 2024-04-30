@@ -1,4 +1,5 @@
-from Product.Product import Product
+# from Product.Product import Product
+from EntitiesForOOP.Product import Product
 import json
 
 

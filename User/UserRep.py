@@ -1,5 +1,7 @@
 import json
-from User.User import User
+# from User.User import User
+from EntitiesForOOP.User import User
+
 
 class UserRep:
     def __init__(self):

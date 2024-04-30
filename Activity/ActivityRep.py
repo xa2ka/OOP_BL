@@ -1,5 +1,7 @@
 import json
-from Activity.Activity import Activity
+# from Activity.Activity import Activity
+from EntitiesForOOP import Activity
+
 
 class ActivityRep:
     def __init__(self):

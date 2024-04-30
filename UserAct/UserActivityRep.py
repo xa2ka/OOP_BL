@@ -1,4 +1,5 @@
-from UserAct.UserAct import UserAct
+# from UserAct.UserAct import UserAct
+from EntitiesForOOP.UserAct import UserAct
 import datetime
 import json
 
