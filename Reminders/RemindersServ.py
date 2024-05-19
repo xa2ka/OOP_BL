@@ -14,9 +14,9 @@ class RemindersServ:
         finally:
             pass
 
-    def deleteReminders(self,reminder):
+    def deleteReminders(self,reminder_id):
         try:
-           self.RemindersRepo.DelRemindInDb(reminder)
+           self.RemindersRepo.DelRemindInDb(reminder_id)
            print("Success")
         except Exception as e:
            print(f"Ошибка: {e}")
@@ -26,7 +26,7 @@ class RemindersServ:
     
     def GetRemindsByUserId(self, user_id):
         try:
-           reminds = self.RemindersRepo.GetRemindsByUserId(user_id) 
+           reminds = self.RemindersRepo.GetRemindersByUserId(user_id) 
            return reminds
         except Exception as e:
            print(f"Ошибка: {e}")

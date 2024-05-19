@@ -49,7 +49,7 @@ class UserServ:
             old_year = None
             while old_year is None:
                 try:
-                    old_year = int(input("Введите возраст пользователя: "))
+                    old_year = float(input("Введите возраст пользователя: "))
                 except ValueError:
                     print("Некорректный ввод. Пожалуйста, введите целое число.")
                     continue
@@ -73,7 +73,7 @@ class UserServ:
             cal_goal = None
             while cal_goal is None:
                 try:
-                    cal_goal = int(input("Введите целевое количество калорий пользователя: "))
+                    cal_goal = float(input("Введите целевое количество калорий пользователя: "))
                 except ValueError:
                     print("Некорректный ввод. Пожалуйста, введите целое число.")
                     continue
@@ -82,12 +82,12 @@ class UserServ:
             while gender is None:
                 gender = input("Введите пол пользователя: ")
                 if gender.lower() not in ["m", "w"]:
-                    print("Некорректный ввод. Пожалуйста, введите 'м' для мужского пола или 'ж' для женского пола.")
+                    print("Некорректный ввод. Пожалуйста, введите 'm' для мужского пола или 'w' для женского пола.")
 
             water_goal = None
             while water_goal is None:
                 try:
-                    water_goal = int(input("Введите целевое количество воды пользователя: "))
+                    water_goal = float(input("Введите целевое количество воды пользователя: "))
                 except ValueError:
                     print("Некорректный ввод. Пожалуйста, введите целое число.")
                     continue
@@ -96,7 +96,7 @@ class UserServ:
             password, old_year, weight, weight_goal,
             cal_goal, gender, water_goal)
             
-            self.add_user(user)
+            # self.add_user(user)
             return user
 
     def add_user(self,user):

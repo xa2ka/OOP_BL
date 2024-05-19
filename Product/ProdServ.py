@@ -1,5 +1,4 @@
 from Product.ProdRep import ProdRep
-# import Product
 
 
 class ProdServ:
@@ -14,7 +13,7 @@ class ProdServ:
 
     def GetProdForCalculating(self, name):
         try:
-            return self.productRepo.GetProdForCalculating(name)
+            return self.productRepo.GetProductForCalculating(name)
         except Exception as e:
             print(f"Произошла ошибка: {e}")
             return None

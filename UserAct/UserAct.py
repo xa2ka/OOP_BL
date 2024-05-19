@@ -17,7 +17,6 @@
 #             "number_min": self.number_min,
 #             "date": self.date.isoformat()
 #         }
-
 #     @classmethod
 #     def from_dict(cls, data):
 #         return cls(

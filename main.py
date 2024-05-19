@@ -6,12 +6,34 @@ import datetime
 # from Reminders.Reminders import Reminder
 # from UserProd.UserProd import UserProd
 
+import sqlite3 as sq
+# ----------DONE-----
+# Product 
+# User
+#
+
+
+#  Water user_id=0, ml=0, date=None
+
+
+# with sq.connect("OOP.db") as con:
+#     cur = con.cursor()
+#     cur.execute("""CREATE TABLE products(
+#         product_id  INTEGER PRIMARY KEY,
+#         name  TEXT NOT NULL,
+#         cal  INTEGER,
+#         fats  INTEGER,
+#         carbs  INTEGER,
+#         protein  INTEGER
+#     )""")
 
 
 from EntitiesForOOP.Product import Product
 from EntitiesForOOP.User import User
 from EntitiesForOOP.Water import Water
 from EntitiesForOOP.Reminders import Reminder
+from EntitiesForOOP.UserProd import UserProd
+
 
 from User.UserServ import UserServ
 from Product.ProdRep import ProdRep
@@ -199,7 +221,6 @@ def case_4():
             print("Activity time in min: ",user_act.number_min)
 
 def case_5():
-    # print(UserServo.logIn()) 
     print("What do you want to change?\n\
           1) Your weight\n\
           2) Your weight goal\n\
@@ -222,33 +243,61 @@ def case_5():
         UserServo.change_user_data(user.id, "water_goal", ans_)
 
 def case_6():
-    name=input("Enter name of your reminder: ")
-    try:
-        on_off=int(input("Enter 1 if reminder is ON and 0 if is OFF: "))
-    except Exception as e:
-        print(f"Error: {e}")
-    
-    time=input("Enter time of your reminder: ")
-    remind=Reminder()
-    remind.user_id=user.id
-    remind.name=name
-    remind.on_off=on_off
-    remind.time=time
-    RemindersServo.addReminders(remind)
+    choice = input ("What do you want to change?\n\
+          1) Add reminder\n\
+          2) Delete reminder\n")
+    if choice == "1":
+        name=input("Enter name of your reminder: ")
+        try:
+            on_off=int(input("Enter 1 if reminder is ON and 0 if is OFF: "))
+        except Exception as e:
+            print(f"Error: {e}")
+        
+        time=input("Enter time of your reminder: ")
+        remind=Reminder()
+        remind.user_id=user.id
+        remind.name=name
+        remind.on_off=on_off
+        remind.time=time
+        RemindersServo.addReminders(remind)
 
-    reminders = RemindersServo.GetRemindsByUserId(user.id)
+        reminders = RemindersServo.GetRemindsByUserId(user.id)
 
-    if len(reminders) > 0:
-        print("Список ваших напоминаний:")
-        print("-------------------------")
-        for reminder in reminders:
-            print("Название: ", reminder.name)
-            print("Статус: ", "Включено" if reminder.on_off == 1 else "Выключено")
-            print("Время: ", reminder.time)
+        if len(reminders) > 0:
+            print("Список ваших напоминаний:")
             print("-------------------------")
-    else:
-        print("У вас нет сохраненных напоминаний.")
+            for reminder in reminders:
+                print("Название: ", reminder.name)
+                print("Статус: ", "Включено" if reminder.on_off == 1 else "Выключено")
+                print("Время: ", reminder.time)
+                print("-------------------------")
+        else:
+            print("У вас нет сохраненных напоминаний.")
+    elif choice =="2":
+        reminders = RemindersServo.GetRemindsByUserId(user.id)
 
+        if len(reminders) > 0:
+            print("Список ваших напоминаний:")
+            print("-------------------------")
+            for reminder in reminders:
+                print("Название: ", reminder.name)
+                print("Статус: ", "Включено" if reminder.on_off == 1 else "Выключено")
+                print("Время: ", reminder.time)
+                print("-------------------------")
+
+        reminder_for_deleting=None
+        name_for_delete= input("Write name of Reminder for deleting: ")
+        for reminder in reminders:
+            if reminder.name == name_for_delete:
+                reminder_for_deleting = reminder
+                break
+        if reminder_for_deleting==None:
+            print("There is no such reminder")
+            return
+        RemindersServo.deleteReminders(reminder_for_deleting.id)
+    else:
+        print("Incorrect Input!")
+        
 
 def case_7():
     user=None
@@ -360,7 +409,7 @@ while True:
             3)Check statistics\n\
             4)View ProductList\Activities by date\n\
             5)Profile\n\
-            6)Add Reminders\n\
+            6)Add\Delete Reminders\n\
             7)Log out\n")
         
     ans = int(input("Your answer: "))
