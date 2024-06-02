@@ -3,8 +3,10 @@ from Product.ProdRep import ProdRep
 
 
 class UserProdServ:
-    user_prod_repo = UserProdRep()
-    prod_repo = ProdRep()
+    
+    def __init__(self):
+        self.user_prod_repo = UserProdRep()
+        self.prod_repo = ProdRep()
 
     def addUserProd(self, user_prod, product):
         try:
@@ -29,8 +31,8 @@ class UserProdServ:
             print(f"Ошибка: {e}")
 
     def GetUserProdByDate(self,user_id, date):
-            user_prods = []
-            for user_prod in self.user_prod_repo.load_user_product_data_from_file():
-                if user_prod.date == date and user_id == user_prod.user_id:
-                    user_prods.append(user_prod)
-            return user_prods
+        user_prods = []
+        for user_prod in self.user_prod_repo.GetAllUserProd():
+            if user_prod.date == date and user_id == user_prod.user_id:
+                user_prods.append(user_prod)
+        return user_prods

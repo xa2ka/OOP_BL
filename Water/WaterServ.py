@@ -7,7 +7,7 @@ class WaterServ:
 
     def addWater(self, water):
         try:
-            self.WaterRepo.WriteWaterInDb(water)
+            self.WaterRepo.addWater(water)
             print("success")
         except Exception as e:
             print(f"Ошибка: {e}")
@@ -16,7 +16,7 @@ class WaterServ:
           
     def GetwaterByDate(self,user_id,date):
         try:
-            water_list = self.WaterRepo.GetWaterByUserData(user_id, date)
+            water_list = self.WaterRepo.GetwaterByDate(user_id, date)
             return water_list
         except Exception as e:
             print(f"Ошибка: {e}")

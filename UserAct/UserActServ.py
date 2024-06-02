@@ -1,6 +1,8 @@
 from UserAct.UserActivityRep import UserActivityRep
 # from UserAct.UserAct import UserAct
 from EntitiesForOOP.UserAct import UserAct
+from EntitiesForOOP.Activity import Activity
+
 
 
 class UserActServ:
@@ -9,7 +11,7 @@ class UserActServ:
 
     def GetCalActiv(self,user_id,date):
         sumCal=0
-        for user_act in self.user_activity_repo.UserActList:
+        for user_act in self.user_activity_repo.GetUserActList():
             if user_act.user_id == user_id and user_act.date == date:
                 sumCal+=user_act.cal
         return sumCal

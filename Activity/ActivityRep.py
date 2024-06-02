@@ -94,7 +94,7 @@ class ActivityRep:
                 cursor = con.cursor()
                 cursor.execute("SELECT * FROM activities")
                 rows = cursor.fetchall()
-                activities = [Activity(row[1], row[2]) for row in rows]
+                activities = [Activity(row[2], row[1]) for row in rows]
                 return activities
         except sqlite3.Error as e:
             print(f"Ошибка чтения из базы данных: {e}")

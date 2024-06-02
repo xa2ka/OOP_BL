@@ -1,44 +1,76 @@
-# from UserProd.UserProd import UserProd
+import sqlite3
+from datetime import datetime
 from EntitiesForOOP.UserProd import UserProd
-import json
 
 class UserProdRep:
     def __init__(self):
-        self.file_name = "UserProductData.json"
-        self.UserProdList = self.load_user_product_data_from_file()
+        self.database_file = "OOP.db"
+        self.create_table_if_not_exists()
 
-    def WriteInDb(self, userProd):
+    def create_table_if_not_exists(self):
         try:
-            self.UserProdList.append(userProd)
-            self.write_user_product_data_to_file()
-            print("User product data written to database")
-        except Exception as e:
-            print(f"Error: {e}")
+            with sqlite3.connect(self.database_file) as con:
+                cursor = con.cursor()
+                cursor.execute("""
+                CREATE TABLE IF NOT EXISTS UserProducts (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    user_id INTEGER,
+                    cal INTEGER,
+                    protein REAL,
+                    carbs REAL,
+                    fats REAL,
+                    date TEXT,
+                    weight REAL
+                )
+                """)
+                con.commit()
+        except sqlite3.Error as e:
+            print(f"Error creating table: {e}")
 
-    def DelInDb(self, userProd):
-        try:
-            self.UserProdList = [prod for prod in self.UserProdList if prod.name != userProd.name]
-            self.write_user_product_data_to_file()
-            print("User product data deleted from database")
-        except Exception as e:
-            print(f"Error: {e}")
+    def GetUserProdList(self, user_id):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("SELECT * FROM UserProducts WHERE user_id = ?", (user_id,))
+            rows = cursor.fetchall()
+            user_prods = []
+            for row in rows:
+                user_prod = UserProd(user_id=row[2], name=row[1], cal=row[3], protein=row[4], carbs=row[5], fats=row[6], date=datetime.strptime(row[7], "%Y-%m-%d").date(), weight=row[8])
+                user_prod.id = row[0]
+                user_prods.append(user_prod)
+            return user_prods
 
-    def write_user_product_data_to_file(self):
-        user_product_data = [userProd.to_dict() for userProd in self.UserProdList]
+    def WriteInDb(self, user_prod):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("INSERT INTO UserProducts (name, user_id, cal, protein, carbs, fats, date, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                           (user_prod.name, user_prod.user_id, user_prod.cal, user_prod.protein, user_prod.carbs, user_prod.fats, user_prod.date.strftime("%Y-%m-%d"), user_prod.weight))
+            con.commit()
+            print("User product written to database")
 
-        with open(self.file_name, 'w') as file:
-            json.dump(user_product_data, file)
-
-        print("User product data written to file")
-
-    def load_user_product_data_from_file(self):
-        user_product_data = []
-
-        try:
-            with open(self.file_name, 'r') as file:
-                user_product_data = json.load(file)
-        except FileNotFoundError:
-            print("User product data file not found. Starting with an empty list.")
-
-        user_products = [UserProd.from_dict(data_dict) for data_dict in user_product_data]
-        return user_products
+    def DelInDb(self, user_prod):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("DELETE FROM UserProducts WHERE id = ?", (user_prod.id,))
+            con.commit()
+            print("User product deleted from database")
+    
+    def GetAllUserProd(self):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("SELECT * FROM UserProducts")
+            rows = cursor.fetchall()
+            user_prods = []
+            for row in rows:
+                user_prod = UserProd()
+                user_prod.user_id = row[2]
+                user_prod.name = row[1]
+                user_prod.cal = row[3]
+                user_prod.protein = row[4]
+                user_prod.carbs = row[5]
+                user_prod.fats = row[6]
+                user_prod.date = row[7]
+                user_prod.weight = row[8]
+                user_prod.id = row[0]
+                user_prods.append(user_prod)
+            return user_prods

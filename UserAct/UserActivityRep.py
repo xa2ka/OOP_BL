@@ -1,56 +1,64 @@
-# from UserAct.UserAct import UserAct
+import sqlite3
 from EntitiesForOOP.UserAct import UserAct
-import datetime
-import json
-
 
 class UserActivityRep:
     def __init__(self):
-        self.file_name = "UserActivities.json"
-        self.UserActs = self.load_user_activities_from_file()
+        self.database_file = "OOP.db"
+        self.create_table_if_not_exists()
+
+    def create_table_if_not_exists(self):
+        try:
+            with sqlite3.connect(self.database_file) as con:
+                cursor = con.cursor()
+                cursor.execute("""
+                CREATE TABLE IF NOT EXISTS UserActivities (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    user_id INTEGER,
+                    date TEXT,
+                    cal REAL,
+                    number_min INTEGER
+                )
+                """)
+                con.commit()
+        except sqlite3.Error as e:
+            print(f"Error creating table: {e}")
+
+    def GetUserActList(self):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("SELECT * FROM UserActivities")
+            rows = cursor.fetchall()
+            user_acts = []
+            for row in rows:
+                user_act = UserAct()
+                user_act.id, user_act.name, user_act.user_id, user_act.date, user_act.cal, user_act.number_min = row
+                user_acts.append(user_act)
+            return user_acts
 
     def GetUserActByDate(self, user_id, date):
-        matching_user_acts = []
-
-        for user_act in self.UserActs:
-            if user_act.user_id == user_id and user_act.date == date:
-                matching_user_acts.append(user_act)
-        return matching_user_acts
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("SELECT * FROM UserActivities WHERE user_id = ? AND date = ?", (user_id, date))
+            rows = cursor.fetchall()
+            user_acts = []
+            for row in rows:
+                user_act = UserAct()
+                user_act.id, user_act.name, user_act.user_id, user_act.date, user_act.cal, user_act.number_min = row
+                user_acts.append(user_act)
+            return user_acts
 
     def WriteInDb(self, user_act):
-        try:
-            self.UserActs.append(user_act)
-            self.WriteUserActivitiesToFile()
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("INSERT INTO UserActivities (name, user_id, date, cal, number_min) VALUES (?, ?, ?, ?, ?)",
+                           (user_act.name, user_act.user_id, user_act.date, user_act.cal, user_act.number_min))
+            con.commit()
             print("User activity written to database")
-        except Exception as e:
-            print(f"Ошибка: {e}")
 
-    def DelInDb(self, user_id):
-        self.UserActs = [user_act for user_act in self.UserActs if user_act.user_id != user_id]
-        print("User activity deleted from database")
-
-    def WriteUserActivitiesToFile(self):
-        user_activities_data = [user_act.to_dict() for user_act in self.UserActs]
-
-        with open(self.file_name, 'w') as file:
-            json.dump(user_activities_data, file)
-
-        print("User activities written to file")
-
-    def load_user_activities_from_file(self):
-        user_act=UserAct()
-        try:
-            with open(self.file_name, 'r') as file:
-                user_activities_data = json.load(file)
-                user_activities = [UserAct.from_dict(user_act_data) for user_act_data in user_activities_data]
-                return user_activities
-        except FileNotFoundError:
-            return []
-        except Exception as e:
-            print(f"Ошибка при чтении файла: {e}")
-            return []
-
-    def create_file(self):
-        with open(self.file_name, 'w') as file:
-            json.dump([], file)
-        print("File created:", self.file_name)
+    def delete_from_db(self, user_id):
+        with sqlite3.connect(self.database_file) as con:
+            cursor = con.cursor()
+            cursor.execute("DELETE FROM UserActivities WHERE user_id = ?", (user_id,))
+            con.commit()
+            print("User activity deleted from database")

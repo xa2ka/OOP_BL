@@ -26,15 +26,14 @@ import sqlite3 as sq
 #         carbs  INTEGER,
 #         protein  INTEGER
 #     )""")
-
-
+ 
 from EntitiesForOOP.Product import Product
 from EntitiesForOOP.User import User
 from EntitiesForOOP.Water import Water
 from EntitiesForOOP.Reminders import Reminder
 from EntitiesForOOP.UserProd import UserProd
-
-
+from EntitiesForOOP.Activity import Activity
+from EntitiesForOOP.Water import Water
 from User.UserServ import UserServ
 from Product.ProdRep import ProdRep
 from Product.ProdServ import ProdServ
@@ -43,7 +42,7 @@ from Water.WaterServ import WaterServ
 from Activity.ActivityServ import ActivityServ
 from UserAct.UserActServ import UserActServ
 from Reminders.RemindersServ import RemindersServ
-
+from User.UserRep import UserRep
 
 
 import datetime
@@ -58,7 +57,7 @@ WaterServo=WaterServ()
 ActivityServo=ActivityServ()
 UserActServo=UserActServ()
 RemindersServo=RemindersServ()
-
+UserRepo=UserRep()
 
 def case_1():
     print("What would you like to add?\n"
@@ -76,13 +75,14 @@ def case_1():
     elif ans2 == "3":
         ActivityServo.GetAllActivities()
         name_act = input("Enter name of activity: ")
-        activity = ActivityServo.GetActByName(name_act)
+        activity_=Activity()
+        activity_= ActivityServo.GetActByName(name_act)
         time_min = int(input("Enter time of your activity: "))
 
         date_str = input("Enter date for adding your activity(DD.MM.YYYY): ")
         Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
         
-        UserActServo.addUserAct(activity, user.id, time_min,Date)
+        UserActServo.addUserAct(activity_, user.id, time_min,Date)
                 
     else:
         print("Invalid choice")
@@ -90,13 +90,17 @@ def case_1():
     
 
 def case_2():
-        try:
-            date_str = input("Enter date for checking Product List(DD.MM.YYYY): ")
-            Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
-        except Exception as e:
-            print(f"Invalid input: {e}")
 
-        UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date)
+
+        date_str = input("Enter date for checking Product List(DD.MM.YYYY): ")
+        try:
+            Date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+        except ValueError:
+            print("Некорректный формат даты. Пожалуйста, введите дату в правильном формате (дд.мм.гггг).")
+
+
+        Date_str = Date.strftime("%Y-%m-%d")
+        UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date_str)
 
         print("User Product List:\n--------------------------")
         for user_prod in UserProdLst:
@@ -126,27 +130,28 @@ def case_3():
         else:
             break
 
+    Date_str = Date.strftime("%Y-%m-%d")
     print("----------------STATISTICS--------------\n\n\n")
     print("----------------WATER----------------\n")
     try: 
-        WatLst = WaterServo.GetwaterByDate(user.id, Date)
+        WatLst = WaterServo.GetwaterByDate(user.id,Date_str)
         WaterSum = 0
         for wat in WatLst:
-            WaterSum += wat.ml
+            print(wat.ml)
+            WaterSum += int(wat.ml)
         print(f"The amount of water: {WaterSum}")    
     except Exception as e:
-        print(f"Error: {e}") 
+        print(f"Ошибка: {e}") 
     print("The goal of water per day: ",user.water_goal)
     print("Remaining water(ml) per day",user.water_goal-WaterSum)
 
     print("----------------PRODUCTS----------------\n")
-  
+    CalSum = 0
+    ProtSum = 0
+    FatSum = 0
+    CarbsSum = 0
     try:
-        UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date)
-        ProtSum = 0
-        FatSum = 0
-        CarbsSum = 0
-        CalSum = 0
+        UserProdLst = UserProdServo.GetUserProdByDate(user.id, Date_str)
 
         for UserProd_ in UserProdLst:    
             ProtSum += UserProd_.protein
@@ -158,7 +163,7 @@ def case_3():
             f"The amount of calories: {CalSum}\n"
             f"The amount of carbs: {CarbsSum}\n")  
     except Exception as e:
-        print(f"Error: {e}") 
+        print(f"ТУТ ОШИБКА: {e}") 
 
     print("the goal of calories per day: ",user.cal_goal)
     print("Remaining calories per day",user.cal_goal-CalSum)
@@ -167,7 +172,7 @@ def case_3():
     print("----------------ACTIVITIES----------------\n")
   
     try:
-        UserActList = UserActServo.GetUserActByDate(user.id, Date)
+        UserActList = UserActServo.GetUserActByDate(user.id, Date_str)
         CalOfUsersActs = 0
         for user_act in UserActList:
             CalOfUsersActs += user_act.cal
@@ -195,32 +200,42 @@ def case_3():
 def case_4():
         try:
             date_str = input("Enter the date when the product was eaten (DD.MM.YYYY): ")
-            date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
+            # date = datetime.datetime.strptime(date_str, "%d.%m.%Y").date()
         except Exception as e:
             print(f"Error: {e}")
 
-        UserProdLst = UserProdServo.GetUserProdByDate(user.id, date)
+        UserProdLst = UserProdServo.GetUserProdByDate(user.id, date_str)
 
         print("User Product List:\n--------------------------")
         for user_prod in UserProdLst:
-            print("Name:", user_prod.name)
-            print("Calories:", user_prod.cal)
-            print("Protein:", user_prod.protein)
-            print("Carbs:", user_prod.carbs)
-            print("Fats:", user_prod.fats)
-            print("Date:", user_prod.date)
-            print("Weight:", user_prod.weight)
-            print("-------------------------")  
+            print((f"Name: {user_prod.name}\n"
+                f"Calories: {user_prod.cal}\n"
+                f"Protein: {user_prod.protein}\n"
+                f"Carbs: {user_prod.carbs}\n"
+                f"Fats: {user_prod.fats}\n"
+                f"Date: {user_prod.date}\n"
+                f"Weight: {user_prod.weight}"))
+            print("-------------------------")
 
         print("User Activities:\n--------------------------")
-        UserActList = UserActServo.GetUserActByDate(user.id, date)
+        UserActList = UserActServo.GetUserActByDate(user.id, date_str)
         for user_act in UserActList:
-            print("Activity name: ",user_act.name)
-            print("Activity date: ",user_act.date)
-            print("Activity calories: ",user_act.cal)
-            print("Activity time in min: ",user_act.number_min)
+            print((f"Activity name: {user_act.name}\n"
+                f"Activity date: {user_act.date}\n"
+                f"Activity calories: {user_act.cal}\n"
+                f"Activity time in min: {user_act.number_min}"))
 
 def case_5():
+    global user
+    user=UserRepo.GetUserById(user.id)
+    print(f"""PROFILE
+    - Your weight: {user.weight}
+    - Your weight goal: {user.weight_goal}
+    - Your calories goal: {user.cal_goal}
+    - Your water goal: {user.water_goal}
+    """)
+
+
     print("What do you want to change?\n\
           1) Your weight\n\
           2) Your weight goal\n\

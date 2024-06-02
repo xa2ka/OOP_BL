@@ -1,4 +1,3 @@
 class Activity:
-    def __init__(self, id=0, cal=0, name=""):
-        self.id, self.cal, self.name = \
-        id, cal, name
+    def __init__(self, cal=0, name=""):
+        self.cal, self.name = cal, name

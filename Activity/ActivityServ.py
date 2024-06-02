@@ -13,9 +13,9 @@ class ActivityServ:
         if not activities:
             print("No activities found.")
         else:
-            print("All activities:\n")
+            print("All activities:\n")         
             for activity in activities:
-                print(f"- Name: {activity.name}")
+                print(f"Name: {activity.name}, Calories: {activity.cal}")
 
     def GetActByName(self,name):
         for activity in self.activityRepo.GetAllActivities():
