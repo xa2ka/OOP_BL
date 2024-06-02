@@ -333,14 +333,19 @@ def WritingUserProd():
             print(attr + ":", value)
         print("------------------")    
 
-    NameOfProduct=input("Write name of Product: ")
-    product = Product()  
-    for prod in ProdServo.GetAllProducts():    
-      if NameOfProduct == prod.name:
-          product=prod
-          break
-      
-   
+
+    done=False
+    while done == False:
+        NameOfProduct=input("Write name of Product: ")
+        product = Product()  
+    
+        for prod in ProdServo.GetAllProducts():    
+            if NameOfProduct == prod.name:
+                product=prod
+                done=True
+                break
+
+    
     try:
         weight = int(input("Write weight of product in grams: "))
     except Exception as e:
