@@ -1,31 +1,8 @@
 import datetime
 
-# from Product.Product import Product
-# from User.User import User
-# from Water.Water import Water
-# from Reminders.Reminders import Reminder
-# from UserProd.UserProd import UserProd
 
 import sqlite3 as sq
-# ----------DONE-----
-# Product 
-# User
-#
 
-
-#  Water user_id=0, ml=0, date=None
-
-
-# with sq.connect("OOP.db") as con:
-#     cur = con.cursor()
-#     cur.execute("""CREATE TABLE products(
-#         product_id  INTEGER PRIMARY KEY,
-#         name  TEXT NOT NULL,
-#         cal  INTEGER,
-#         fats  INTEGER,
-#         carbs  INTEGER,
-#         protein  INTEGER
-#     )""")
  
 from EntitiesForOOP.Product import Product
 from EntitiesForOOP.User import User
@@ -43,13 +20,11 @@ from Activity.ActivityServ import ActivityServ
 from UserAct.UserActServ import UserActServ
 from Reminders.RemindersServ import RemindersServ
 from User.UserRep import UserRep
-
-
 import datetime
+
+
 current_date = datetime.date.today()
-
 user=User()
-
 ProdServo=ProdServ()
 UserServo=UserServ()
 UserProdServo=UserProdServ()
@@ -235,6 +210,15 @@ def case_5():
     - Your water goal: {user.water_goal}
     """)
 
+    ans_ = print("do you want to change your data?(Y/N): ")
+    
+    if ans_ != "Y" or ans_ != "N":
+        print("Wrong answer")
+        return  
+    elif ans_ == "N":
+        return
+
+
 
     print("What do you want to change?\n\
           1) Your weight\n\
@@ -256,6 +240,9 @@ def case_5():
     elif ans == 4:
         ans_ = int(input("Write your new water goal: "))
         UserServo.change_user_data(user.id, "water_goal", ans_)
+    else:
+        return
+    
 
 def case_6():
     choice = input ("What do you want to change?\n\
@@ -402,6 +389,7 @@ def initialize():
             return
         else:
             UserServo.add_user(user)
+        user = UserServo.logInForSignUp(user.email,user.password)
 
     else:
         user = UserServo.logIn()
@@ -424,7 +412,7 @@ if user==None:
 while True:
 
     print("MENU:\n \
-            1)Add Product\Water\Activity\Reminders\n\
+            1)Add Product\Water\Activity\n\
             2)Delete Product in List by date\n\
             3)Check statistics\n\
             4)View ProductList\Activities by date\n\

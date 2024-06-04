@@ -22,17 +22,6 @@ class UserServ:
       
     def SignUp(self):
             id = None
-            # while id is None:
-            #     try:
-            #         id = int(input("Введите ID пользователя: "))
-            #         for user in self.UserRepo.users:
-            #             if id == user.id:
-            #                 print("Некорректный ввод. Пользователь с таким id уже есть.")
-            #                 id=None
-            #                 break
-            #     except ValueError:
-            #         print("Некорректный ввод. Пожалуйста, введите целое число.")
-            #         continue
                     
             name = input("Введите имя пользователя: ")
 
@@ -118,3 +107,13 @@ class UserServ:
             self.UserRepo.UpdateUserInDb(user)
         except Exception as e:
             print(f"Произошла ошибка: {e}")
+
+    def logInForSignUp(self,email,password):
+        try:
+            user = self.UserRepo.GetUserByEmailPassword(email,password)
+            if user == None:
+                return 
+            return user
+        except Exception as e:
+            print(f"Ошибка: {e}")
+            return None        
